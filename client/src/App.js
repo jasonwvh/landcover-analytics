@@ -39,7 +39,7 @@ class App extends Component {
 
   handleWaterVisibility = event => {
     if (this.state.water_visibility > 0.5) this.setState({water_visibility: 0})
-    if (this.state.water_visibility < 0.5) this.setState({water_visibility: 0.8})
+    if (this.state.water_visibility < 0.5) this.setState({water_visibility: 0.7})
   }
   
   async getGeodata(year) {

@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import SidebarCompare from '../components/SidebarCompare'
 
 import ReactCompareImage from 'react-compare-image'
-import { ReactCompareSlider, ReactCompareSliderImage } from 'react-compare-slider';
 
 import '../App.css'
 
@@ -13,11 +12,11 @@ class ComparePage extends Component {
 		this.state = {
 			img1: {
 				label: '2013',
-				src: '../data/2013.PNG'
+				src: require('../data/2013.PNG').default
 			},
 			img2: {
 				label: '2016',
-				src: '../data/2016.PNG'
+				src: require('../data/2016.PNG').default
 			}
 		}
 		this._handleChangeField = this._handleChangeField.bind(this)
@@ -28,7 +27,7 @@ class ComparePage extends Component {
 		this.setState({
 			[field.name]: {
 				label: field.value,
-				src: '../data/' + field.value + '.PNG'
+				src: require('../data/' + field.value + '.PNG').default
 			}
 		})
 	}
@@ -61,9 +60,14 @@ class ComparePage extends Component {
 								margin: '0 auto'
 							}}
 						>
-							<ReactCompareSlider
-								itemOne={<ReactCompareSliderImage src="../data/2013.PNG" alt="Image one" />}
-                                itemTwo={<ReactCompareSliderImage src="../data/2016.PNG" alt="Image two" />}
+							<ReactCompareImage
+								leftImage={img1.src}
+								leftImageLabel={img1.label}
+								rightImage={img2.src}
+								rightImageLabel={img2.label}
+								aspectRatio="wider"
+								leftImageCss={{ objectFit: 'contain', objectPosition: 'top' }}
+								rightImageCss={{ objectFit: 'contain', objectPosition: 'top' }}
 							/>
 						</div>
 					</div>

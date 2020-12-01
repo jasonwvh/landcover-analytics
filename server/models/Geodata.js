@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+// our data schema **might not be necessary?**
 const GeodataSchema = new mongoose.Schema({
   type: {
     type: String
@@ -10,6 +11,7 @@ const GeodataSchema = new mongoose.Schema({
   geometry: {
     type: Object
   }
-}, { collection : 'data' });
+}, { collection : 'data' }); //specify database we retrieving from
 
+//export
 module.exports = mongoose.model('Geodata', GeodataSchema);

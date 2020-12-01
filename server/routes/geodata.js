@@ -3,8 +3,9 @@ const { getGeodata } = require('../controllers/geodata');
 
 const router = express.Router();
 
+// route to controller
 router
-    .route('/:year')
+    .route('/:location/:year')
     .get(getGeodata)
 
 module.exports = router;

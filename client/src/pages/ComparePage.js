@@ -5,10 +5,13 @@ import ReactCompareImage from 'react-compare-image'
 
 import '../App.css'
 
+// need to activate ESLint if not showing images
+
 class ComparePage extends Component {
 	constructor(props) {
 		super(props)
 
+		// States for controlling images
 		this.state = {
 			img1: {
 				label: '2013',
@@ -22,8 +25,8 @@ class ComparePage extends Component {
 		this._handleChangeField = this._handleChangeField.bind(this)
 	}
 
+	// change images when user selects from drop-down menu
 	_handleChangeField = field => {
-		console.log(field)
 		this.setState({
 			[field.name]: {
 				label: field.value,
@@ -35,7 +38,7 @@ class ComparePage extends Component {
 	componentDidMount() {}
 
 	render() {
-
+		
 		const {
 			img1,
 			img2

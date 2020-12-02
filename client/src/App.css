@@ -4,7 +4,6 @@
 	display: flex;
 }
 
-/* Layout */
 .wrapper {
 	margin-top: 0;
 	overflow-x: hidden;
@@ -19,7 +18,7 @@
 }
 
 .intro {
-	flex: 0 0 430px;
+	flex: 0 0 600px;
 	text-align: center;
 	color: #fff;
 	padding-top: 40px;

@@ -7,6 +7,7 @@ import MapGL, { Source, Layer } from "@urbica/react-map-gl";
 import YearSlider from "../components/YearSlider";
 import SidebarExplore from "../components/SidebarExplore";
 
+/* CONSTANTS */
 const coords = {
     kota_setar: {
         latitude: 6.13,
@@ -16,17 +17,15 @@ const coords = {
         latitude: 1.74,
         longitude: 103.88,
     },
-};
-
-// MapBox access token
-const accessToken =
-    "pk.eyJ1IjoiamFzb253dmgiLCJhIjoiY2s3cmF1dWVqMDJ5YzNsa3h6eHNwZ25zeiJ9.y913k9ZD3TOPLtSSD-IViw";
+};                      // coordinates of the locations
+const startYear = 2016; // start of slider
+const endYear = 2020;   // end of slider
+const accessToken = "pk.eyJ1IjoiamFzb253dmgiLCJhIjoiY2s3cmF1dWVqMDJ5YzNsa3h6eHNwZ25zeiJ9.y913k9ZD3TOPLtSSD-IViw"; // mapbox access token
 
 class ExplorePage extends Component {
     // constructor and defining states
     constructor(props) {
         super(props);
-
         this.state = {
             viewport: {
                 latitude: 0,
@@ -34,24 +33,22 @@ class ExplorePage extends Component {
                 zoom: 11,
                 bearing: 0,
                 pitch: 0,
-            },
-            location: "",
-            startYear: 2016,
-            selectedYear: 2018,
-            endYear: 2020,
-            geoData: null,
+            }, // viewport state for interaction
+            location: "", // location to pan to
+            selectedYear: 2018, // current point of slider
+            geoData: null, // data of our land covers
             water: {
                 isChecked: false,
                 visibility: 0,
-            },
+            }, // for controlling checkboxes and visibility of layer
             urban: {
                 isChecked: true,
                 visibility: 0.8,
-            },
+            }, // for controlling checkboxes and visibility of layer
             vegetation: {
                 isChecked: true,
                 visibility: 0.8,
-            },
+            }, // for controlling checkboxes and visibility of layer
         };
         this.handleYearChange = this.handleYearChange.bind(this);
         this.handleVisibilityChange = this.handleVisibilityChange.bind(this);
@@ -62,11 +59,11 @@ class ExplorePage extends Component {
 
     // mount
     async componentWillMount() {
-        // get location params
+        // get and set location params from url
         const location = this.props.match.params.location;
         this.setState({ location });
 
-        // get viewport
+        // get and set location coords
         const viewport = {
             latitude: coords[location].latitude,
             longitude: coords[location].longitude,
@@ -76,7 +73,7 @@ class ExplorePage extends Component {
         };
         await this.setState({ viewport });
 
-        // get initial data
+        // get and set initial data
         await this.getGeodata(location, this.state.selectedYear);
     }
 
@@ -84,16 +81,17 @@ class ExplorePage extends Component {
     handleYearChange = (selectedYear) => {
         this.setState({ selectedYear });
 
-        console.log(this.state.location, this.state.selectedYear);
-
+        // get and set our geospatial data
         const geoData = this.getGeodata(this.state.location, selectedYear);
         this.setState({ geoData });
     };
 
     // handle visibility
     handleVisibilityChange = (layer) => {
+        // if checked, set visibility alpha to 0.8, else 0
         const vis = layer.checked === true ? 0.8 : 0;
 
+        // water, urban, or vegetation layer
         this.setState({
             [layer.name]: {
                 isChecked: layer.checked,
@@ -108,13 +106,15 @@ class ExplorePage extends Component {
         let res = await fetch(
             "http://localhost:5000/api/" + location + "/" + selectedYear
         );
+        // format to json
         let data = await res.json();
 
+        // define geoData
         let geoData;
-        console.log("data", data.data[0]);
 
-        // map our data, retrieve features
+        // if not undefined
         if (data.data[0] != null) {
+            // map our data, retrieve features
             geoData = data.data.map((geo) => ({
                 type: "FeatureCollection",
                 features: geo.features,
@@ -122,6 +122,7 @@ class ExplorePage extends Component {
             // get main element
             geoData = geoData[0];
         } else {
+            // else default blank state
             geoData = {
                 type: "Feature",
                 geometry: {
@@ -143,9 +144,7 @@ class ExplorePage extends Component {
         // defining states
         const {
             viewport,
-            startYear,
             selectedYear,
-            endYear,
             location,
             geoData,
             water,
@@ -153,9 +152,9 @@ class ExplorePage extends Component {
             vegetation,
         } = this.state;
 
+        // define our max bounds
         const c_lat = coords[location].latitude;
         const c_lng = coords[location].longitude;
-
         var sw = new mapboxgl.LngLat(c_lng - 0.6, c_lat - 0.5);
         var ne = new mapboxgl.LngLat(c_lng + 0.6, c_lat + 0.5);
         var llb = new mapboxgl.LngLatBounds(sw, ne);
@@ -163,11 +162,8 @@ class ExplorePage extends Component {
         return (
             <div className="top">
                 <div className="intro">
+                    {/* Sidebar with layer visibility checkboxes */}
                     <SidebarExplore
-                        startYear={startYear}
-                        selectedYear={selectedYear}
-                        endYear={endYear}
-                        onYearChange={this.handleYearChange}
                         onVisibilityChange={this.handleVisibilityChange}
                         isWaterChecked={water.isChecked}
                         isUrbanChecked={urban.isChecked}
@@ -175,8 +171,8 @@ class ExplorePage extends Component {
                     />
                 </div>
                 <div className="map">
+                    {/* mapping library */}
                     <div style={{ height: "100%", position: "relative" }}>
-                        {/* mapping library */}
                         <MapGL
                             style={{ height: "100vh", width: "100%" }}
                             mapStyle="mapbox://styles/mapbox/dark-v9"
@@ -187,7 +183,7 @@ class ExplorePage extends Component {
                             minZoom={10}
                             {...viewport}
                         >
-                            {/* retrieve source from data */}
+                            {/* retrieve source from geoData */}
                             <Source
                                 id="geoData"
                                 type="geojson"
@@ -195,6 +191,7 @@ class ExplorePage extends Component {
                             ></Source>
 
                             {/* layer with data-driven properties, paint color and visibility based on landcover (label) */}
+                            {/* SHOULD CHANGE TO STRING LABEL */}
                             <Layer
                                 id="geoData"
                                 type="fill"

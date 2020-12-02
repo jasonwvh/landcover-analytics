@@ -13,11 +13,13 @@ class App extends Component {
     render() {
         return (
             <div className="wrapper">
+                {/* Router for Home, Explore, and Compare pages */}
                 <BrowserRouter>
                     <Route path="/" exact={true} component={HomePage} />
                     <Route path="/explore/:location" component={ExplorePage} />
                     <Route path="/compare" component={ComparePage} />
                 </BrowserRouter>
+                {/* Analysis and Area fragments underneath */}
                 <Analysis />
 				<About />
             </div>

@@ -1,10 +1,12 @@
 import React, { Component } from "react";
-import "../App.css";
-import "mapbox-gl/dist/mapbox-gl.css";
-import { Link } from '@material-ui/core'
+import { Link } from "@material-ui/core";
 import MapGL, { Marker } from "@urbica/react-map-gl";
 import mapboxgl from "mapbox-gl";
+
 import SidebarHome from "../components/SidebarHome";
+
+import "../App.css";
+import "mapbox-gl/dist/mapbox-gl.css";
 
 // MapBox access token
 const accessToken =
@@ -22,15 +24,12 @@ class HomePage extends Component {
                 zoom: 6,
                 bearing: 0,
                 pitch: 0,
-            },
+            },  // viewport state for panning
         };
     }
 
     // on moving viewport
     _onViewportChange = (viewport) => this.setState({ viewport });
-
-    // Mount
-    componentDidMount() {}
 
     render() {
         // defining states
@@ -44,6 +43,7 @@ class HomePage extends Component {
         return (
             <div className="top">
                 <div className="intro">
+                    {/* simple sidebar */}
                     <SidebarHome />
                 </div>
                 <div className="map">
@@ -65,17 +65,44 @@ class HomePage extends Component {
                                 longitude={100.35}
                                 onClick={this.onMarkerClick}
                             >
-                                <Link href="/explore/kota_setar"><div style={{padding: '10px', color: '#fff', cursor: 'pointer', background: '#1978c8', borderRadius: '6px'}}>Kota Setar</div></Link>
+                                {/* link to kota setar */}
+                                <Link href="/explore/kota_setar">
+                                    <div
+                                        style={{
+                                            padding: "16px",
+                                            color: "#fff",
+                                            cursor: "pointer",
+                                            background: "#1978c8",
+                                            borderRadius: "6px",
+                                            fontSize: '18px',
+                                        }}
+                                    >
+                                        Kota Setar
+                                    </div>
+                                </Link>
                             </Marker>
                             {/* Marker kota tinggi */}
+
                             <Marker
                                 latitude={1.74}
                                 longitude={103.87}
                                 onClick={this.onMarkerClick}
                             >
-                            
-                                <Link href="/explore/kota_tinggi"><div style={{padding: '10px', color: '#fff', cursor: 'pointer', background: '#1978c8', borderRadius: '6px'}}>Kota Tinggi</div></Link>
-                                
+                                {/* link to kota tinggi */}
+                                <Link href="/explore/kota_tinggi">
+                                    <div
+                                        style={{
+                                            padding: "16px",
+                                            color: "#fff",
+                                            cursor: "pointer",
+                                            background: "#1978c8",
+                                            borderRadius: "6px",
+                                            fontSize: '18px',
+                                        }}
+                                    >
+                                        Kota Tinggi
+                                    </div>
+                                </Link>
                             </Marker>
                         </MapGL>
                     </div>

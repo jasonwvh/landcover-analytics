@@ -12,9 +12,13 @@ import {
 	Legend,
 	ResponsiveContainer
 } from 'recharts'
-
 import { blue, purple, green, amber } from '@material-ui/core/colors'
 
+import Papa from 'papaparse'
+import csvKS from '../data/kota_setar.csv'
+import csvKT from '../data/kota_tinggi.csv'
+
+/*
 const data = [
 	{ name: '1990', Water: 1000, BuiltUp: 5000, Vegetation: 8000, BareSoil: 6000},
 	{ name: '1995', Water: 950, BuiltUp: 5500, Vegetation: 7450, BareSoil: 6100 },
@@ -24,18 +28,64 @@ const data = [
 	{ name: '2015', Water: 900, BuiltUp: 7000, Vegetation: 5500, BareSoil: 6600 },
 	{ name: '2020', Water: 890, BuiltUp: 7800, Vegetation: 4510, BareSoil: 6800 }
 ]
+*/
+// CONSTANT labels for lulc
+const labels = ['Water', 'Urban', 'Vegetation'];
 
 class Analysis extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			kota_setar: [],
+			kota_tinggi: [],
+		};
+		this.updateKS = this.updateKS.bind(this);
+		this.updateKT = this.updateKT.bind(this);
+	}
+
+	// Update Kota Setar data
+	updateKS(res) {
+		const data = res.data;
+		this.setState({ kota_setar: data })
+	}
+
+	// Update Kota Tinggi data
+	updateKT(res) {
+		const data = res.data;
+		this.setState({ kota_tinggi: data })
+	}
+
+	// Get our data from csv files
+	componentWillMount() {
+		Papa.parse(csvKS, {
+			download:true,
+			header: true,
+			complete: this.updateKS
+		})
+
+		Papa.parse(csvKT, {
+			download:true,
+			header: true,
+			complete: this.updateKT
+		})
+	}
+
 	render() {
+		// define states
+		const { kota_setar, kota_tinggi } = this.state;
+
+		// convert to percent
 		const toPercent = (decimal, fixed = 0) => `${(decimal*100).toFixed(fixed)}%`;
 		  
 		return (
 			<React.Fragment>
 				<Container width="100vw">
+					{/* Title */}
 					<Typography variant="h3" align="center" paragraph>
 						Analysis
 					</Typography>
 					<Container maxWidth="md" paragraph>
+						{/* Text body **TO CHANGE */}
 						<Typography
 							variant="body1"
 							align="justify"
@@ -65,9 +115,10 @@ class Analysis extends Component {
 								paddingBottom: '20px',
 							}}
 						>
+							{/* Chart */}
 							<ResponsiveContainer>
 								<LineChart
-									data={data}
+									data={kota_setar}
 									margin={{ top: 0, right: 20, left: 20, bottom: 20 }}
 								>
 									<XAxis label={{ value: 'Year', position:'bottom'}} dataKey="name" />
@@ -77,17 +128,17 @@ class Analysis extends Component {
 									<Legend verticalAlign="top" height={36}/>
 									<Line
 										type="monotone"
-										dataKey="Water"
+										dataKey={labels[0]}
 										stroke={blue[500]}
 										activeDot={{ r: 8 }}
 									/>
-									<Line type="monotone" dataKey="BuiltUp" stroke={purple[500]} />
-									<Line type="monotone" dataKey="Vegetation" stroke={green[500]} />
-									<Line type="monotone" dataKey="BareSoil" stroke={amber[500]} />
+									<Line type="monotone" dataKey={labels[1]} stroke={purple[500]} />
+									<Line type="monotone" dataKey={labels[2]} stroke={green[500]} />
 								</LineChart>
 							</ResponsiveContainer>
 						</div>
 					</Container>
+					{/* Another text body **TO CHANGE */}
 					<Container maxWidth="md" paragraph>
 						<Typography
 							variant="body1"
@@ -116,9 +167,10 @@ class Analysis extends Component {
 								paddingBottom: '20px',
 							}}
 						>
+							{/* Another chart */}
 							<ResponsiveContainer>
 								<AreaChart
-									data={data}
+									data={kota_tinggi}
 									stackOffset="expand"
 									margin={{ top: 0, right: 20, left: 20, bottom: 20 }}
 								>
@@ -129,21 +181,21 @@ class Analysis extends Component {
 									<Legend verticalAlign="top" height={36}/>
 									<Area
 										type="monotone"
-										dataKey="Water"
+										dataKey={labels[0]}
 										stackId='1'
 										stroke={blue[500]}
 										fill={blue[400]}
 										activeDot={{ r: 8 }}
 									/>
-									<Area type="monotone" dataKey="BuiltUp" stackId='1' stroke={purple[500]} fill={purple[400]} />
-									<Area type="monotone" dataKey="Vegetation" stackId='1' stroke={green[500]} fill={green[400]} />
-									<Area type="monotone" dataKey="BareSoil" stackId='1' stroke={amber[500]} fill={amber[400]} />
+									<Area type="monotone" dataKey={labels[1]} stackId='1' stroke={purple[500]} fill={purple[400]} />
+									<Area type="monotone" dataKey={labels[2]} stackId='1' stroke={green[500]} fill={green[400]} />
 								</AreaChart>
 							</ResponsiveContainer>
 						</div>
 					</Container>
 				</Container>
 				<Divider />
+				{/* Cool background thing */}
 				<Paper
 					disableGutters
 					style={{
@@ -165,7 +217,9 @@ class Analysis extends Component {
 							backgroundColor: 'rgba(0,0,0,0.80)'
 						}}
 					>
+						{/* Yet another text body */}
 						<Container maxWidth="md" style={{ paddingBottom: '20px' }} paragraph>
+							{/* Title */}
 							<Typography
 								variant="h2"
 								align="center"
@@ -175,6 +229,7 @@ class Analysis extends Component {
 							>
 								EARTH NEEDS YOUR HELP
 							</Typography>
+							{/* Body */}
 							<Typography
 								variant="body1"
 								align="justify"

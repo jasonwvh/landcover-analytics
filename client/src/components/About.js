@@ -5,6 +5,7 @@ export default class About extends Component {
 	render() {
 		return (
 			<React.Fragment>
+				{/* Some info about the project */}
 				<Container minWidth="xl" style={{paddingTop:'20px'}}>
 					<Container maxWidth='md'>
 						<Typography variant="h3" align='center' paragraph>About the Data</Typography>

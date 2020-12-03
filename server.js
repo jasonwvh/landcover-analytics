@@ -8,7 +8,7 @@ const connectDB = require('./server/config/db');
 dotenv.config({ path: './server/config/config.env' });
 
 // define port
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8080;
 
 // connect to database
 connectDB();
@@ -32,7 +32,7 @@ if (process.env.NODE_ENV === "production") {
     app.use(express.static("client/build"));
 
     app.get("*", (req, res) => {
-        res.sendFile(path.resoolve(__dirname, "client", "build", "index.html"));
+        res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
     });
 }
 

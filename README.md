@@ -6,3 +6,5 @@ Architecture:
 - ExpressJS and NodeJS Backend
 - ReactJS Frontend
 - Dockerized
+
+Live: https://valulc.herokuapp.com/

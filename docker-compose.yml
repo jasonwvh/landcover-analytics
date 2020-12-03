@@ -1,13 +1,13 @@
 version: '3'
 services:
   client:
-    image: client
+    image: jasonwvh/landcover-analytics:client
     ports: 
       - "3000:3000"
     networks: 
       - lc-app
   server:
-    image: server
+    image: jasonwvh/landcover-analytics:server
     command: /usr/src/app/node_modules/.bin/nodemon server.js
     ports: 
       - "5000:5000"

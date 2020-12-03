@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 // connect to our database
 const connectDB = async () => {
     try {
-        const conn = await mongoose.connect(process.env.MONGO_URI, {
+        const conn = await mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost/geospatial', {
             useNewUrlParser: true,
             useUnifiedTopology: true
         });

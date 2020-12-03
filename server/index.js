@@ -24,6 +24,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 // routes
 app.use('/api', require('./routes/geodata'));
 
+// heroku
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static('client/build'));
+
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, '../client', 'build', 'index.html'));
+    });
+}
+
 // define port
 const PORT = process.env.PORT || 5000;
 

@@ -84,12 +84,12 @@ class HomePage extends Component {
                             {/* Marker kota tinggi */}
 
                             <Marker
-                                latitude={1.74}
-                                longitude={103.87}
+                                latitude={6.00}
+                                longitude={116.02}
                                 onClick={this.onMarkerClick}
                             >
-                                {/* link to kota tinggi */}
-                                <Link href="/explore/kota_tinggi">
+                                {/* link to kota kinabalu */}
+                                <Link href="/explore/kota_kinabalu">
                                     <div
                                         style={{
                                             padding: "16px",
@@ -100,7 +100,7 @@ class HomePage extends Component {
                                             fontSize: '18px',
                                         }}
                                     >
-                                        Kota Tinggi
+                                        Kota Kinabalu
                                     </div>
                                 </Link>
                             </Marker>

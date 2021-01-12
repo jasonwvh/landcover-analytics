@@ -12,32 +12,21 @@ import {
 	Legend,
 	ResponsiveContainer
 } from 'recharts'
-import { blue, purple, green, amber } from '@material-ui/core/colors'
+import { blue, red, green, amber } from '@material-ui/core/colors'
 
 import Papa from 'papaparse'
 import csvKS from '../data/kota_setar.csv'
-import csvKT from '../data/kota_tinggi.csv'
+import csvKK from '../data/kota_kinabalu.csv'
 
-/*
-const data = [
-	{ name: '1990', Water: 1000, BuiltUp: 5000, Vegetation: 8000, BareSoil: 6000},
-	{ name: '1995', Water: 950, BuiltUp: 5500, Vegetation: 7450, BareSoil: 6100 },
-	{ name: '2000', Water: 940, BuiltUp: 5900, Vegetation: 6960, BareSoil: 6200 },
-	{ name: '2005', Water: 920, BuiltUp: 6500, Vegetation: 6380, BareSoil: 6400 },
-	{ name: '2010', Water: 920, BuiltUp: 6600, Vegetation: 5980, BareSoil: 6500 },
-	{ name: '2015', Water: 900, BuiltUp: 7000, Vegetation: 5500, BareSoil: 6600 },
-	{ name: '2020', Water: 890, BuiltUp: 7800, Vegetation: 4510, BareSoil: 6800 }
-]
-*/
-// CONSTANT labels for lulc
-const labels = ['Water', 'Urban', 'Vegetation'];
+// constant labels for lulc
+const labels = ['Water', 'Urban', 'Agriculture', 'Forest'];
 
 class Analysis extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			kota_setar: [],
-			kota_tinggi: [],
+			kota_kinabalu: [],
 		};
 		this.updateKS = this.updateKS.bind(this);
 		this.updateKT = this.updateKT.bind(this);
@@ -49,10 +38,10 @@ class Analysis extends Component {
 		this.setState({ kota_setar: data })
 	}
 
-	// Update Kota Tinggi data
+	// Update Kota Kinabalu data
 	updateKT(res) {
 		const data = res.data;
-		this.setState({ kota_tinggi: data })
+		this.setState({ kota_kinabalu: data })
 	}
 
 	// Get our data from csv files
@@ -63,7 +52,7 @@ class Analysis extends Component {
 			complete: this.updateKS
 		})
 
-		Papa.parse(csvKT, {
+		Papa.parse(csvKK, {
 			download:true,
 			header: true,
 			complete: this.updateKT
@@ -72,7 +61,7 @@ class Analysis extends Component {
 
 	render() {
 		// define states
-		const { kota_setar, kota_tinggi } = this.state;
+		const { kota_setar, kota_kinabalu } = this.state;
 
 		// convert to percent
 		const toPercent = (decimal, fixed = 0) => `${(decimal*100).toFixed(fixed)}%`;
@@ -132,8 +121,9 @@ class Analysis extends Component {
 										stroke={blue[500]}
 										activeDot={{ r: 8 }}
 									/>
-									<Line type="monotone" dataKey={labels[1]} stroke={purple[500]} />
-									<Line type="monotone" dataKey={labels[2]} stroke={green[500]} />
+									<Line type="monotone" dataKey={labels[1]} stroke={red[500]} />
+									<Line type="monotone" dataKey={labels[2]} stroke={amber[500]} />
+									<Line type="monotone" dataKey={labels[3]} stroke={green[500]} />
 								</LineChart>
 							</ResponsiveContainer>
 						</div>
@@ -170,7 +160,7 @@ class Analysis extends Component {
 							{/* Another chart */}
 							<ResponsiveContainer>
 								<AreaChart
-									data={kota_tinggi}
+									data={kota_kinabalu}
 									stackOffset="expand"
 									margin={{ top: 0, right: 20, left: 20, bottom: 20 }}
 								>
@@ -187,8 +177,9 @@ class Analysis extends Component {
 										fill={blue[400]}
 										activeDot={{ r: 8 }}
 									/>
-									<Area type="monotone" dataKey={labels[1]} stackId='1' stroke={purple[500]} fill={purple[400]} />
-									<Area type="monotone" dataKey={labels[2]} stackId='1' stroke={green[500]} fill={green[400]} />
+									<Area type="monotone" dataKey={labels[1]} stackId='1' stroke={red[500]} fill={red[400]} />
+									<Area type="monotone" dataKey={labels[2]} stackId='1' stroke={amber[500]} fill={amber[400]} />
+									<Area type="monotone" dataKey={labels[3]} stackId='1' stroke={green[500]} fill={green[400]} />
 								</AreaChart>
 							</ResponsiveContainer>
 						</div>

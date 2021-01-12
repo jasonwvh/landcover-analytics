@@ -11,7 +11,7 @@ const GeodataSchema = new mongoose.Schema({
   geometry: {
     type: Object
   }
-}, { collection : 'data' }); //specify database we retrieving from
+}, { collection : 'geo' }); //specify database we retrieving from
 
 //export
 module.exports = mongoose.model('Geodata', GeodataSchema);

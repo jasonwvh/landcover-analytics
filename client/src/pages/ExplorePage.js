@@ -13,12 +13,12 @@ const coords = {
         latitude: 6.13,
         longitude: 100.33,
     },
-    kota_tinggi: {
-        latitude: 1.74,
-        longitude: 103.88,
+    kota_kinabalu: {
+        latitude: 6.00,
+        longitude: 116.02,
     },
 };                      // coordinates of the locations
-const startYear = 2016; // start of slider
+const startYear = 2008; // start of slider
 const endYear = 2020;   // end of slider
 const accessToken = "pk.eyJ1IjoiamFzb253dmgiLCJhIjoiY2s3cmF1dWVqMDJ5YzNsa3h6eHNwZ25zeiJ9.y913k9ZD3TOPLtSSD-IViw"; // mapbox access token
 
@@ -45,7 +45,11 @@ class ExplorePage extends Component {
                 isChecked: true,
                 visibility: 0.8,
             }, // for controlling checkboxes and visibility of layer
-            vegetation: {
+            agriculture: {
+                isChecked: true,
+                visibility: 0.8,
+            }, // for controlling checkboxes and visibility of layer
+            forest: {
                 isChecked: true,
                 visibility: 0.8,
             }, // for controlling checkboxes and visibility of layer
@@ -149,7 +153,8 @@ class ExplorePage extends Component {
             geoData,
             water,
             urban,
-            vegetation,
+            agriculture,
+            forest,
         } = this.state;
 
         // define our max bounds
@@ -167,7 +172,8 @@ class ExplorePage extends Component {
                         onVisibilityChange={this.handleVisibilityChange}
                         isWaterChecked={water.isChecked}
                         isUrbanChecked={urban.isChecked}
-                        isVegetationChecked={vegetation.isChecked}
+                        isAgricultureChecked={agriculture.isChecked}
+                        isForestChecked={forest.isChecked}
                     />
                 </div>
                 <div className="map">
@@ -203,9 +209,11 @@ class ExplorePage extends Component {
                                         1,
                                         "blue",
                                         2,
-                                        "green",
+                                        "red",
                                         3,
-                                        "purple",
+                                        "yellow",
+                                        4,
+                                        "green",
                                         "#000",
                                     ],
                                     "fill-opacity": [
@@ -214,9 +222,11 @@ class ExplorePage extends Component {
                                         1,
                                         this.state.water.visibility,
                                         2,
-                                        this.state.vegetation.visibility,
+                                        this.state.agriculture.visibility,
                                         3,
                                         this.state.urban.visibility,
+                                        4,
+                                        this.state.forest.visibility,
                                         0,
                                     ],
                                 }}

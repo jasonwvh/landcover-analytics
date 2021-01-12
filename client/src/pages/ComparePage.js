@@ -14,10 +14,10 @@ class ComparePage extends Component {
         // States for controlling images
         this.state = {
 			location: "Kota_Setar",
-			year1: 2013,
-			year2: 2016,
-            img1: require("../data/Kota_Setar_2013.PNG").default,
-            img2: require("../data/Kota_Setar_2016.PNG").default,
+			year1: 2018,
+			year2: 2020,
+            img1: require("../data/Kota_Setar_2018.PNG").default,
+            img2: require("../data/Kota_Setar_2020.PNG").default,
         };
         this._handleChangeYear = this._handleChangeYear.bind(this);
     }

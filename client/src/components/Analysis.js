@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
 import { Container, Paper, Typography, Divider } from '@material-ui/core'
 import {
-	LineChart,
 	AreaChart,
-	Line,
 	Area,
 	XAxis,
 	YAxis,
@@ -12,14 +10,14 @@ import {
 	Legend,
 	ResponsiveContainer
 } from 'recharts'
-import { blue, red, green, amber } from '@material-ui/core/colors'
+import { lightBlue, deepOrange, lightGreen, amber, grey } from '@material-ui/core/colors'
 
 import Papa from 'papaparse'
 import csvKS from '../data/kota_setar.csv'
 import csvKK from '../data/kota_kinabalu.csv'
 
 // constant labels for lulc
-const labels = ['Water', 'Urban', 'Agriculture', 'Forest'];
+const labels = ['Water', 'Urban', 'Agriculture', 'Forest', 'Others'];
 
 class Analysis extends Component {
 	constructor(props) {
@@ -76,25 +74,14 @@ class Analysis extends Component {
 					<Container maxWidth="md" paragraph>
 						{/* Text body **TO CHANGE */}
 						<Typography
-							variant="body1"
-							align="justify"
+							variant="h4"
+							align="center"
 							style={{ paddingBottom: '20px' }}
 							paragraph
 						>
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce et felis
-							et justo elementum consectetur a sit amet lorem. Sed vel pulvinar erat,
-							sed consequat mi. Sed quam magna, faucibus tincidunt cursus et,
-							consectetur ac ligula. Maecenas congue placerat enim, sed consequat
-							ligula gravida a. Praesent sollicitudin nisi aliquam sem elementum
-							euismod. Nullam semper velit et elit sodales gravida. Mauris sed rutrum
-							leo. Nulla facilisi. Maecenas volutpat finibus massa, interdum rhoncus
-							sapien hendrerit at. Sed et ipsum eu augue viverra auctor. Quisque congue
-							hendrerit orci, vitae feugiat nunc convallis eget. Pellentesque a odio
-							nisl. In arcu erat, scelerisque tempus maximus vel, tristique ut risus.
-							Pellentesque rhoncus enim sed magna venenatis, at blandit risus lacinia.
-							Etiam eu urna nisl. Pellentesque felis arcu, tempus quis tortor ut,
-							porttitor maximus lorem.
+							Kota Setar
 						</Typography>
+
 						<div
 							style={{
 								maxWidth: '720px',
@@ -106,47 +93,45 @@ class Analysis extends Component {
 						>
 							{/* Chart */}
 							<ResponsiveContainer>
-								<LineChart
+								<AreaChart
 									data={kota_setar}
+									stackOffset="expand"
 									margin={{ top: 0, right: 20, left: 20, bottom: 20 }}
 								>
-									<XAxis label={{ value: 'Year', position:'bottom'}} dataKey="name" />
-									<YAxis label={{ value: 'Area (km2)', angle: -90, position: 'left'}}/>
+									<XAxis label={{ value: 'Year', position:'bottom'}} dataKey="Year" />
+									<YAxis label={{ value: 'Area (%)', angle: -90, position: 'left'}} tickFormatter={toPercent} />
 									<CartesianGrid strokeDasharray="3 3" />
 									<Tooltip />
 									<Legend verticalAlign="top" height={36}/>
-									<Line
-										type="monotone"
-										dataKey={labels[0]}
-										stroke={blue[500]}
-										activeDot={{ r: 8 }}
-									/>
-									<Line type="monotone" dataKey={labels[1]} stroke={red[500]} />
-									<Line type="monotone" dataKey={labels[2]} stroke={amber[500]} />
-									<Line type="monotone" dataKey={labels[3]} stroke={green[500]} />
-								</LineChart>
+									<Area
+										type="monotone" dataKey={labels[0]} stackId='1' stroke={lightBlue[500]} fill={lightBlue[400]} />
+									<Area type="monotone" dataKey={labels[1]} stackId='1' stroke={deepOrange[500]} fill={deepOrange[400]} />
+									<Area type="monotone" dataKey={labels[2]} stackId='1' stroke={amber[500]} fill={amber[400]} />
+									<Area type="monotone" dataKey={labels[3]} stackId='1' stroke={lightGreen[500]} fill={lightGreen[400]} />
+									<Area type="monotone" dataKey={labels[4]} stackId='1' stroke={grey[500]} fill={grey[400]} />
+								</AreaChart>
 							</ResponsiveContainer>
 						</div>
-					</Container>
-					{/* Another text body **TO CHANGE */}
-					<Container maxWidth="md" paragraph>
 						<Typography
 							variant="body1"
 							align="justify"
 							style={{ paddingBottom: '20px' }}
 							paragraph
 						>
-							Donec in justo nisl. Nulla facilisi. Fusce consectetur metus in sapien
-							lobortis fermentum. Praesent et augue vitae nulla elementum rutrum.
-							Integer rhoncus lectus eu nisi tempor, a rutrum orci varius. Vestibulum
-							rutrum enim a fermentum fringilla. Pellentesque lacinia posuere dolor,
-							eget ultrices sem auctor eget. Duis mauris enim, hendrerit sed
-							ullamcorper quis, pretium et magna. Etiam tincidunt tincidunt turpis ac
-							vulputate. Sed ut mauris enim. Pellentesque condimentum nulla in lacus
-							laoreet, ac pretium nibh lobortis. Duis auctor velit ut pretium egestas.
-							Vivamus commodo luctus facilisis. Pellentesque porttitor, leo quis
-							consequat egestas, magna nibh vehicula est, quis semper risus arcu non
-							purus.
+							From 2010 to 2020, urban area in Kota Setar has increased by 1.43% while Forest area has decreased by 9.22%
+							Water bodies area increased by 32.26% and Agriculture areas decreased by 9.83%
+						
+						</Typography>
+					</Container>
+					{/* Another text body **TO CHANGE */}
+					<Container maxWidth="md" paragraph>
+						<Typography
+							variant="h4"
+							align="center"
+							style={{ paddingBottom: '20px' }}
+							paragraph
+						>
+							Kota Kinabalu
 						</Typography>
 						<div
 							style={{
@@ -164,25 +149,29 @@ class Analysis extends Component {
 									stackOffset="expand"
 									margin={{ top: 0, right: 20, left: 20, bottom: 20 }}
 								>
-									<XAxis label={{ value: 'Year', position:'bottom'}} dataKey="name" />
+									<XAxis label={{ value: 'Year', position:'bottom'}} dataKey="Year" />
 									<YAxis label={{ value: 'Area (%)', angle: -90, position: 'left'}} tickFormatter={toPercent} />
 									<CartesianGrid strokeDasharray="3 3" />
 									<Tooltip />
 									<Legend verticalAlign="top" height={36}/>
-									<Area
-										type="monotone"
-										dataKey={labels[0]}
-										stackId='1'
-										stroke={blue[500]}
-										fill={blue[400]}
-										activeDot={{ r: 8 }}
-									/>
-									<Area type="monotone" dataKey={labels[1]} stackId='1' stroke={red[500]} fill={red[400]} />
+									<Area type="monotone" dataKey={labels[0]} stackId='1' stroke={lightBlue[500]} fill={lightBlue[400]} />
+									<Area type="monotone" dataKey={labels[1]} stackId='1' stroke={deepOrange[500]} fill={deepOrange[400]} />
 									<Area type="monotone" dataKey={labels[2]} stackId='1' stroke={amber[500]} fill={amber[400]} />
-									<Area type="monotone" dataKey={labels[3]} stackId='1' stroke={green[500]} fill={green[400]} />
+									<Area type="monotone" dataKey={labels[3]} stackId='1' stroke={lightGreen[500]} fill={lightGreen[400]} />
+									<Area type="monotone" dataKey={labels[4]} stackId='1' stroke={grey[500]} fill={grey[400]} />
 								</AreaChart>
 							</ResponsiveContainer>
 						</div>
+						<Typography
+							variant="body1"
+							align="justify"
+							style={{ paddingBottom: '20px' }}
+							paragraph
+						>
+						From 2010 to 2020, urban area in Kota Kinabalu has increased by 23.06% while Forest area has decreased by 3.55%
+						Water bodies area decreased by 26.72% and Agriculture areas increased by 28.03%
+
+						</Typography>
 					</Container>
 				</Container>
 				<Divider />
@@ -218,7 +207,7 @@ class Analysis extends Component {
 								style={{ paddingTop: '30px', paddingBottom: '20px' }}
 								paragraph
 							>
-								EARTH NEEDS YOUR HELP
+								EARTH NEEDS OUR HELP
 							</Typography>
 							{/* Body */}
 							<Typography
@@ -228,16 +217,58 @@ class Analysis extends Component {
 								style={{ paddingBottom: '20px' }}
 								paragraph
 							>
-								In rutrum tempor augue, tempus gravida risus ultrices sed. Proin quis
-								aliquet lacus. Vestibulum ante ipsum primis in faucibus orci luctus et
-								ultrices posuere cubilia Curae; Aenean fermentum tortor dapibus purus
-								auctor blandit. Nam nec arcu a felis venenatis vehicula sit amet tempus
-								sapien. Curabitur vestibulum magna sem, nec pellentesque enim dictum
-								vitae. Morbi a dolor a sem semper dignissim.
+								Deforestation has a huge impact in the livelihood of millions of people. Some 13.2 million people across the world have a job in the forest sector and another 41 million have a job that is related to the sector. Many animals also rely on forests. Eighty percent of the world's land-based species, such as elephants and rhinos, live in forests. Forests also play a critical role in mitigating climate change because they act as a carbon sink—soaking up carbon dioxide that would otherwise be free in the atmosphere and contribute to ongoing changes in climate patterns. 
+							</Typography>
+							<Typography
+								variant="body1"
+								align="justify"
+								color="inherit"
+								style={{ paddingBottom: '20px' }}
+								paragraph
+							>
+								But forests around the world are under threat, jeopardizing these benefits. The threats manifest themselves in the form of deforestation and forest degradation. The main cause of deforestation is agriculture (poorly planned infrastructure is emerging as a big threat too) and the main cause of forest degradation is illegal logging. In 2019, the tropics lost close to 30 soccer fields' worth of trees every single minute.
+							</Typography>
+							<Typography
+								variant="body1"
+								align="justify"
+								color="inherit"
+								style={{ paddingBottom: '20px' }}
+								paragraph
+							>
+								Deforestation is a particular concern in tropical rain forests because these forests are home to much of the world’s biodiversity. For example, in the Amazon around 17% of the forest has been lost in the last 50 years, mostly due to forest conversion for cattle ranching. Deforestation in this region is particularly rampant near more populated areas, roads and rivers, but even remote areas have been encroached upon when valuable mahogany, gold, and oil are discovered.
+							</Typography>
+							<Typography
+								variant="body1"
+								align="justify"
+								color="inherit"
+								style={{ paddingBottom: '20px' }}
+								paragraph
+							>
+								[Source: worldwildlife.org]
 							</Typography>
 						</Container>
 					</div>
 				</Paper>
+				<Divider />
+				{/* Some info about the project */}
+				<Container minWidth="xl" style={{paddingTop:'20px'}}>
+					<Container maxWidth='md'>
+						<Typography variant="h4" align='center' paragraph>Methodology</Typography>
+						<Typography variant="body1" align='justify' paragraph>
+						Satellite images are collected from the USGS' EarthExplorer website by selecting the image with the lowest cloud cover at a 2 years interval.
+						</Typography>
+						<Typography variant="body1" align='justify' paragraph>
+                        The images are segmented into 'superpixels', which are a group of pixels that share similar characteristics. The segmented image is ran through a selected classification model to classify the image into distinct land use and land covers.
+                        </Typography>
+						<Typography variant="body1" align='justify' paragraph>
+                        The classified images are vectorized and then displayed here
+                        </Typography>
+						<Typography variant="h4" align='center' paragraph>Creation</Typography>
+						<Typography variant="body1" align='justify' paragraph>
+						This project was created by Jason Wong Vun Hang for my Bachelor's Thesis under Prof. Dr. Lilly Suriani.
+						</Typography>
+					</Container>
+				</Container>
 				<Divider />
 			</React.Fragment>
 		)

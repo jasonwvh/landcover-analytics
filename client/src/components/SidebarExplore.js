@@ -50,6 +50,7 @@ const SidebarExplore = (props) => {
         isWaterChecked,
         isUrbanChecked,
         isForestChecked,
+        isCloudChecked,
         isAgricultureChecked,
         onVisibilityChange,
     } = props;
@@ -138,6 +139,21 @@ const SidebarExplore = (props) => {
                             />
                         }
                         label="Forest"
+                    />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={isCloudChecked}
+                                onChange={_onVisibilityChange}
+                                name="cloud"
+                                classes={{
+                                    root: classes.checkbox,
+                                    checked: classes.checked,
+                                }}
+                                color="primary"
+                            />
+                        }
+                        label="Cloud"
                     />
                 </FormGroup>
             </div>

@@ -7,6 +7,8 @@ import MapGL, { Source, Layer } from "@urbica/react-map-gl";
 import YearSlider from "../components/YearSlider";
 import SidebarExplore from "../components/SidebarExplore";
 
+import { lightBlue, deepOrange, lightGreen, amber, grey } from '@material-ui/core/colors'
+
 /* CONSTANTS */
 const coords = {
     kota_setar: {
@@ -14,8 +16,8 @@ const coords = {
         longitude: 100.33,
     },
     kota_kinabalu: {
-        latitude: 6.00,
-        longitude: 116.02,
+        latitude: 6.03,
+        longitude: 116.28,
     },
 };                      // coordinates of the locations
 const startYear = 2008; // start of slider
@@ -53,6 +55,10 @@ class ExplorePage extends Component {
                 isChecked: true,
                 visibility: 0.8,
             }, // for controlling checkboxes and visibility of layer
+            cloud: {
+                isChecked: true,
+                visibility: 0.8,
+            }, // for controlling checkboxes and visibility of layer
         };
         this.handleYearChange = this.handleYearChange.bind(this);
         this.handleVisibilityChange = this.handleVisibilityChange.bind(this);
@@ -82,12 +88,12 @@ class ExplorePage extends Component {
     }
 
     // handle year slider
-    handleYearChange = (selectedYear) => {
-        this.setState({ selectedYear });
+    handleYearChange = async (selectedYear) => {
+        await this.setState({ selectedYear });
 
         // get and set our geospatial data
-        const geoData = this.getGeodata(this.state.location, selectedYear);
-        this.setState({ geoData });
+        const geoData = await this.getGeodata(this.state.location, selectedYear);
+        await this.setState({ geoData });
     };
 
     // handle visibility
@@ -141,7 +147,7 @@ class ExplorePage extends Component {
         }
 
         // update state
-        this.setState({ geoData });
+        await this.setState({ geoData });
     }
 
     render() {
@@ -155,6 +161,7 @@ class ExplorePage extends Component {
             urban,
             agriculture,
             forest,
+            cloud,
         } = this.state;
 
         // define our max bounds
@@ -174,6 +181,7 @@ class ExplorePage extends Component {
                         isUrbanChecked={urban.isChecked}
                         isAgricultureChecked={agriculture.isChecked}
                         isForestChecked={forest.isChecked}
+                        isCloudChecked={cloud.isChecked}
                     />
                 </div>
                 <div className="map">
@@ -197,7 +205,6 @@ class ExplorePage extends Component {
                             ></Source>
 
                             {/* layer with data-driven properties, paint color and visibility based on landcover (label) */}
-                            {/* SHOULD CHANGE TO STRING LABEL */}
                             <Layer
                                 id="geoData"
                                 type="fill"
@@ -207,14 +214,16 @@ class ExplorePage extends Component {
                                         "match",
                                         ["get", "label"],
                                         1,
-                                        "blue",
+                                        lightBlue[500],
                                         2,
-                                        "red",
+                                        deepOrange[500],
                                         3,
-                                        "yellow",
+                                        amber[500],
                                         4,
-                                        "green",
-                                        "#000",
+                                        lightGreen[500],
+                                        5,
+                                        lightBlue[50],
+                                        grey[900],
                                     ],
                                     "fill-opacity": [
                                         "match",
@@ -222,11 +231,13 @@ class ExplorePage extends Component {
                                         1,
                                         this.state.water.visibility,
                                         2,
-                                        this.state.agriculture.visibility,
-                                        3,
                                         this.state.urban.visibility,
+                                        3,
+                                        this.state.agriculture.visibility,
                                         4,
                                         this.state.forest.visibility,
+                                        5,
+                                        this.state.cloud.visibility,
                                         0,
                                     ],
                                 }}

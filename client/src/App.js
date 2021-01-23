@@ -19,9 +19,8 @@ class App extends Component {
                     <Route path="/explore/:location" component={ExplorePage} />
                     <Route path="/compare" component={ComparePage} />
                 </BrowserRouter>
-                {/* Analysis and Area fragments underneath */}
+                {/* Analysis section */}
                 <Analysis />
-				<About />
             </div>
         );
     }

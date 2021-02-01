@@ -209,7 +209,7 @@ class ExplorePage extends Component {
     async getGeodata(location, selectedYear) {
         // append parameters to api
         let res = await fetch(
-            "http://localhost:5000/api/" + location + "/" + selectedYear
+            "/api/" + location + "/" + selectedYear
         );
         // format to json
         let data = await res.json();

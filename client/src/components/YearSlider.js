@@ -93,7 +93,7 @@ const CustomSlider = withStyles({
 
 // Main functions
 const YearSlider = (props) => {
-    const { onYearChange, startYear, selectedYear, endYear } = props;
+    const { onYearChange, startYear, selectedYear, endYear, step } = props;
     const classes = useStyles();
 
 	// handler function for year change
@@ -112,7 +112,7 @@ const YearSlider = (props) => {
                 min={startYear}
                 max={endYear}
                 value={selectedYear}
-                step={2}
+                step={step}
                 onChange={_onYearChange}
             />
             <div className={classes.margin} />

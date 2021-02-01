@@ -7,7 +7,6 @@ import ExplorePage from "./pages/ExplorePage";
 import ComparePage from './pages/ComparePage'
 
 import Analysis from './components/Analysis'
-import About from './components/About'
 
 class App extends Component {
     render() {

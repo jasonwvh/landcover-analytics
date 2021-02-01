@@ -7,7 +7,13 @@ import MapGL, { Source, Layer } from "@urbica/react-map-gl";
 import YearSlider from "../components/YearSlider";
 import SidebarExplore from "../components/SidebarExplore";
 
-import { lightBlue, deepOrange, lightGreen, amber, grey } from '@material-ui/core/colors'
+import {
+    lightBlue,
+    deepOrange,
+    lightGreen,
+    amber,
+    grey,
+} from "@material-ui/core/colors";
 
 /* CONSTANTS */
 const coords = {
@@ -19,10 +25,12 @@ const coords = {
         latitude: 6.03,
         longitude: 116.28,
     },
-};                      // coordinates of the locations
+}; // coordinates of the locations
 const startYear = 2008; // start of slider
-const endYear = 2020;   // end of slider
-const accessToken = "pk.eyJ1IjoiamFzb253dmgiLCJhIjoiY2s3cmF1dWVqMDJ5YzNsa3h6eHNwZ25zeiJ9.y913k9ZD3TOPLtSSD-IViw"; // mapbox access token
+const endYear = 2020; // end of slider
+const step = 2;        // step of slider
+const accessToken =
+    "pk.eyJ1IjoiamFzb253dmgiLCJhIjoiY2s3cmF1dWVqMDJ5YzNsa3h6eHNwZ25zeiJ9.y913k9ZD3TOPLtSSD-IViw"; // mapbox access token
 
 class ExplorePage extends Component {
     // constructor and defining states
@@ -38,7 +46,9 @@ class ExplorePage extends Component {
             }, // viewport state for interaction
             location: "", // location to pan to
             selectedYear: 2018, // current point of slider
+            prev_geoData: null,
             geoData: null, // data of our land covers
+            next_geoData: null,
             water: {
                 isChecked: false,
                 visibility: 0,
@@ -71,6 +81,7 @@ class ExplorePage extends Component {
     async componentWillMount() {
         // get and set location params from url
         const location = this.props.match.params.location;
+        const { selectedYear } = this.state;
         this.setState({ location });
 
         // get and set location coords
@@ -84,16 +95,100 @@ class ExplorePage extends Component {
         await this.setState({ viewport });
 
         // get and set initial data
-        await this.getGeodata(location, this.state.selectedYear);
+        const geoData = await this.getGeodata(location, selectedYear);
+        this.setState({ geoData })
+
+        // get and set previous and next data
+        const prevYear = selectedYear - step;
+        const nextYear = selectedYear + step;
+
+        const next_geoData = await this.getGeodata(location, nextYear);
+        const prev_geoData = await this.getGeodata(location, prevYear);
+
+        this.setState({ prev_geoData });
+        this.setState({ next_geoData });
+
     }
 
     // handle year slider
     handleYearChange = async (selectedYear) => {
+        // old selected year
+        const oldYear = this.state.selectedYear;
+
+        // new selected year
         await this.setState({ selectedYear });
 
-        // get and set our geospatial data
-        const geoData = await this.getGeodata(this.state.location, selectedYear);
-        await this.setState({ geoData });
+        const { location, prev_geoData, geoData, next_geoData } = this.state;
+
+        // if older date -1 step selected
+        if (oldYear === selectedYear - step) {
+            // if we have data, replace
+            if (prev_geoData) {
+                // store old data
+                const tmp = geoData;
+
+                // set new data
+                await this.setState({ geoData: prev_geoData });
+    
+
+                // replace next data with old data so no need to load twice
+                this.setState({ next_geoData: tmp });
+
+            }
+            // if not, just get data
+            else {
+                const geoData = await this.getGeodata(location, selectedYear);
+                this.setState({ geoData })
+            }
+            
+            // get and set data for prev year
+            const prevYear = selectedYear - step;
+            const preGeo = await this.getGeodata(location, prevYear)
+            this.setState({ prev_geoData: preGeo })
+        }
+
+        // new newer date +1 step selected
+        else if (oldYear === selectedYear + step) {
+            // if we have data, replace
+            if (next_geoData) {
+                // store old data
+                const tmp = geoData;
+
+                // set new data
+                await this.setState({ geoData: next_geoData });
+
+                // replace prev data with old data so no need to load twice
+                this.setState({ prev_geoData: tmp });
+            }
+            // if not, just get data
+            else {
+                const geoData = await this.getGeodata(location, selectedYear);
+                this.setState({ geoData })
+            }
+
+            // get and set data for next year
+            const nextYear = selectedYear + step;
+            const nexGeo = await this.getGeodata(location, nextYear)
+            this.setState({ next_geoData: nexGeo })
+        }
+
+        // if other years selected
+        else { 
+            // get and set current year data
+            const geoData = await this.getGeodata(location, selectedYear);
+            await this.setState({ geoData })
+
+            // get and set prev and next year data
+            const prevYear = selectedYear - step;
+            const nextYear = selectedYear + step;
+
+            const preGeo = await this.getGeodata(location, prevYear);
+            const nexGeo = await this.getGeodata(location, nextYear);
+
+    
+            this.setState({ prev_geoData: preGeo });
+            this.setState({ next_geoData: nexGeo });
+        }
     };
 
     // handle visibility
@@ -147,7 +242,10 @@ class ExplorePage extends Component {
         }
 
         // update state
-        await this.setState({ geoData });
+        // await this.setState({ geoData });
+
+        console.log(location, selectedYear);
+        return geoData;
     }
 
     render() {
@@ -248,6 +346,7 @@ class ExplorePage extends Component {
                             startYear={startYear}
                             selectedYear={selectedYear}
                             endYear={endYear}
+                            step={step}
                             onYearChange={this.handleYearChange}
                         />
                     </div>

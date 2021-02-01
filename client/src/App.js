@@ -7,7 +7,6 @@ import ExplorePage from "./pages/ExplorePage";
 import ComparePage from './pages/ComparePage'
 
 import Analysis from './components/Analysis'
-import About from './components/About'
 
 class App extends Component {
     render() {
@@ -19,9 +18,8 @@ class App extends Component {
                     <Route path="/explore/:location" component={ExplorePage} />
                     <Route path="/compare" component={ComparePage} />
                 </BrowserRouter>
-                {/* Analysis and Area fragments underneath */}
+                {/* Analysis section */}
                 <Analysis />
-				<About />
             </div>
         );
     }

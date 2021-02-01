@@ -49,7 +49,9 @@ const SidebarExplore = (props) => {
     const {
         isWaterChecked,
         isUrbanChecked,
-        isVegetationChecked,
+        isForestChecked,
+        isCloudChecked,
+        isAgricultureChecked,
         onVisibilityChange,
     } = props;
 
@@ -106,13 +108,13 @@ const SidebarExplore = (props) => {
                         }
                         label="Urban"
                     />
-					{/* Vegetation */}
+					{/* Agriculture */}
                     <FormControlLabel
                         control={
                             <Checkbox
-                                checked={isVegetationChecked}
+                                checked={isAgricultureChecked}
                                 onChange={_onVisibilityChange}
-                                name="vegetation"
+                                name="agriculture"
                                 classes={{
                                     root: classes.checkbox,
                                     checked: classes.checked,
@@ -120,7 +122,38 @@ const SidebarExplore = (props) => {
                                 color="primary"
                             />
                         }
-                        label="Vegetation"
+                        label="Agriculture"
+                    />
+                    {/* Forest */}
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={isForestChecked}
+                                onChange={_onVisibilityChange}
+                                name="forest"
+                                classes={{
+                                    root: classes.checkbox,
+                                    checked: classes.checked,
+                                }}
+                                color="primary"
+                            />
+                        }
+                        label="Forest"
+                    />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={isCloudChecked}
+                                onChange={_onVisibilityChange}
+                                name="cloud"
+                                classes={{
+                                    root: classes.checkbox,
+                                    checked: classes.checked,
+                                }}
+                                color="primary"
+                            />
+                        }
+                        label="Cloud"
                     />
                 </FormGroup>
             </div>

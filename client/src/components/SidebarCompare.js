@@ -6,23 +6,56 @@ import { blue } from "@material-ui/core/colors";
 // locations of images
 const locations = [
     {
-        value: "Kota_Setar",
+        value: "Kota Setar",
     },
     {
-        value: "Kota_Tinggi",
+        value: "Kota Kinabalu",
     },
 ];
+
+const combis = [
+    {
+        value: "Natural",
+    },
+    {
+        value: "Natural Atmospheric",
+    },
+    {
+        value: "False Color Urban",
+    },
+    {
+        value: "Infrared Vegetation",
+    },
+    {
+        value: "Agriculture",
+    },
+    {
+        value: "Land Water",
+    },
+]
 
 // years of images
 const years = [
     {
-        value: "2013",
+        value: "2008",
+    },
+    {
+        value: "2010",
+    },
+    {
+        value: "2012",
+    },
+    {
+        value: "2014",
     },
     {
         value: "2016",
     },
     {
-        value: "2019",
+        value: "2018",
+    },
+    {
+        value: "2020",
     },
 ];
 
@@ -74,16 +107,21 @@ const SidebarCompare = (props) => {
     const classes = useStyles();
 
     // use props
-    const { location, year1, year2, onChangeYear, onChangeLocation } = props;
+    const { location, combi, year1, year2, onChangeYear, onChangeLocation, onChangeCombi } = props;
 
     // handler function for field change
-    function _onChangeYear(event, value) {
+    function _onChangeYear(event) {
         onChangeYear(event.target);
     }
 
     // handler function for field change
-    function _onChangeLocation(event, value) {
+    function _onChangeLocation(event) {
         onChangeLocation(event.target);
+    }
+
+    // handler function for field change
+    function _onChangeCombi(event) {
+        onChangeCombi(event.target);
     }
 
     return (
@@ -111,7 +149,6 @@ const SidebarCompare = (props) => {
             <div className={classes.contentMargin} />
             {/* Location Selection */}
             <div className={classes.menu}>
-                {/* First image */}
                 <form noValidate autoComplete="off">
                     <TextField
                         select
@@ -137,6 +174,39 @@ const SidebarCompare = (props) => {
                         }}
                     >
                         {locations.map((option) => (
+                            <MenuItem key={option.value} value={option.value}>
+                                {option.value}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                </form>
+                {/* Separator */}
+                <div className={classes.contentMargin} />
+                <form noValidate autoComplete="off">
+                    <TextField
+                        select
+                        minWidth={30}
+                        name="combi"
+                        variant="outlined"
+                        label="Image mode"
+                        value={combi}
+                        onChange={_onChangeCombi}
+                        className={classes.textField}
+                        InputLabelProps={{
+                            classes: {
+                                root: classes.label,
+                                focused: classes.focused,
+                            },
+                        }}
+                        InputProps={{
+                            classes: {
+                                root: classes.outlinedInput,
+                                focused: classes.focused,
+                                notchedOutline: classes.notchedOutline,
+                            },
+                        }}
+                    >
+                        {combis.map((option) => (
                             <MenuItem key={option.value} value={option.value}>
                                 {option.value}
                             </MenuItem>

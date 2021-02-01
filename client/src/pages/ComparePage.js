@@ -17,8 +17,8 @@ class ComparePage extends Component {
             combi: "Natural",
 			year1: 2008,
 			year2: 2018,
-            img1: require("../data/Kota Setar/Natural/2018.png").default,
-            img2: require("../data/Kota Setar/Natural/2020.png").default,
+            img1: "https://landcover-analytics.s3-ap-southeast-1.amazonaws.com/Kota Setar/Natural/2018.png",
+            img2: "https://landcover-analytics.s3-ap-southeast-1.amazonaws.com/Kota Setar/Natural/2020.png",
         };
         this._handleChangeYear = this._handleChangeYear.bind(this);
         this._handleChangeCombi = this._handleChangeCombi.bind(this);
@@ -48,8 +48,8 @@ class ComparePage extends Component {
 	async _updateImage() {
         const { location, combi, year1, year2 } = this.state;
 		await this.setState({
-			img1: require("../data/" + location + "/" + combi + "/" + year1 + ".png").default,
-			img2: require("../data/" + location + "/" + combi + "/" + year2 + ".png").default,
+			img1: "https://landcover-analytics.s3-ap-southeast-1.amazonaws.com/" + location + "/" + combi + "/" + year1 + ".png",
+			img2: "https://landcover-analytics.s3-ap-southeast-1.amazonaws.com/" + location + "/" + combi + "/" + year2 + ".png",
         });
     }
 

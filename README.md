@@ -7,6 +7,8 @@ Architecture:
 - MapBox GL
 - ReactJS Frontend
 
+Classification process can be seen on https://github.com/jasonwvh/landcover-classification
+
 ## Explore
 ![explore](explore.PNG)
 

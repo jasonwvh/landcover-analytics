@@ -4,7 +4,13 @@ Allows user to control time slider, toggle layers of land cover and year and com
 Architecture:
 - MongoDB Database
 - ExpressJS and NodeJS Backend
+- MapBox GL
 - ReactJS Frontend
-- Dockerized
+
+## Explore
+![explore](explore.PNG)
+
+## Compare
+![compare](compare.PNG)
 
 Live: https://valulc.herokuapp.com/
